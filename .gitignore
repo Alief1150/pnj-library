@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual env
+venv/
+.env
+
+# Django
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# Local large data/book assets
+buku/
+
+# OS/IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Local agent/dev folders
+.claude/

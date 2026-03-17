@@ -1,0 +1,81 @@
+{% extends 'perpustakaan/base.html' %}
+
+{% block title %}Home - Perpustakaan PNJ{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Selamat Datang di Perpustakaan PNJ</h1>
+        <p class="hero-subtitle">Temukan koleksi buku terlengkap untuk mendukung pembelajaran dan penelitian Anda</p>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'perpustakaan:login' %}" class="btn btn-primary btn-large">Masuk untuk Membaca</a>
+        {% else %}
+            <a href="{% url 'perpustakaan:koleksi_buku' %}" class="btn btn-primary btn-large">Lihat Koleksi Buku</a>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Featured Books Section -->
+<section class="featured-books">
+    <div class="container">
+        <h2 class="section-title">Buku Terbaru</h2>
+        <div class="books-grid">
+            {% for buku in buku_terbaru %}
+                <div class="book-card">
+                    <div class="book-cover">
+                        {% if buku.cover %}
+                            <img src="{{ buku.cover.url }}" alt="{{ buku.judul }}">
+                        {% else %}
+                            <div class="placeholder-cover">
+                                <svg width="60" height="80" viewBox="0 0 60 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="60" height="80" rx="4" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+                                    <rect x="8" y="12" width="44" height="4" rx="2" fill="#4caf50"/>
+                                    <rect x="8" y="20" width="36" height="2" rx="1" fill="#81c784"/>
+                                    <rect x="8" y="26" width="40" height="2" rx="1" fill="#81c784"/>
+                                    <rect x="8" y="32" width="32" height="2" rx="1" fill="#81c784"/>
+                                </svg>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">{{ buku.judul|truncatewords:5 }}</h3>
+                        <p class="book-author">{{ buku.penulis }}</p>
+                        <span class="book-category">{{ buku.get_jenis_display }}</span>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'perpustakaan:detail_buku' buku.id %}" class="btn-book">Lihat Detail</a>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <div class="no-books">
+                    <p>Belum ada buku yang tersedia saat ini.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+    <div class="container">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>Koleksi Lengkap</h3>
+                <p>Ribuan buku dari berbagai disiplin ilmu</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Pencarian Mudah</h3>
+                <p>Temukan buku dengan cepat dan mudah</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎓</div>
+                <h3>Untuk Mahasiswa</h3>
+                <p>Dukungan penuh untuk kegiatan akademik</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

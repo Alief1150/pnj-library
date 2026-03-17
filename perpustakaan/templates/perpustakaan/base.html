@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Perpustakaan PNJ{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>Perpustakaan PNJ</h1>
+            </div>
+            <div class="nav-menu">
+                {% if user.is_authenticated %}
+                    <span class="welcome-msg">Selamat datang, {{ user.username }}</span>
+                    <a href="{% url 'perpustakaan:home' %}" class="nav-link">Home</a>
+                    <a href="{% url 'perpustakaan:koleksi_buku' %}" class="nav-link">Koleksi</a>
+                    <form method="post" action="{% url 'logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-logout">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'perpustakaan:home' %}" class="nav-link">Home</a>
+                    <a href="{% url 'perpustakaan:login' %}" class="btn-login">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Perpustakaan Politeknik Negeri Jakarta. All rights reserved.</p>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

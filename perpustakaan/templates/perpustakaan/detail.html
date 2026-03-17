@@ -1,0 +1,76 @@
+{% extends 'perpustakaan/base.html' %}
+
+{% block title %}{{ buku.judul }} - Perpustakaan PNJ{% endblock %}
+
+{% block content %}
+<section class="detail-section">
+    <div class="container">
+        <a href="{% url 'perpustakaan:koleksi_buku' %}" class="btn-back">← Kembali ke Koleksi</a>
+        <div class="book-detail">
+            <div class="detail-cover">
+                {% if buku.cover %}
+                    <img src="{{ buku.cover.url }}" alt="{{ buku.judul }}">
+                {% else %}
+                    <div class="placeholder-cover-large">
+                        <svg width="200" height="280" viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="200" height="280" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="4"/>
+                            <rect x="24" y="36" width="152" height="16" rx="8" fill="#4caf50"/>
+                            <rect x="24" y="72" width="120" height="8" rx="4" fill="#81c784"/>
+                            <rect x="24" y="92" width="136" height="8" rx="4" fill="#81c784"/>
+                            <rect x="24" y="112" width="112" height="8" rx="4" fill="#81c784"/>
+                            <rect x="24" y="132" width="128" height="8" rx="4" fill="#81c784"/>
+                            <rect x="24" y="152" width="96" height="8" rx="4" fill="#81c784"/>
+                        </svg>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="detail-info">
+                <h1 class="detail-title">{{ buku.judul }}</h1>
+                <p class="detail-author">Penulis: {{ buku.penulis }}</p>
+                <div class="detail-meta">
+                    <span class="meta-item">
+                        <strong>Kategori:</strong> {{ buku.get_jenis_display }}
+                    </span>
+                    {% if buku.tahun_terbit %}
+                        <span class="meta-item">
+                            <strong>Tahun Terbit:</strong> {{ buku.tahun_terbit }}
+                        </span>
+                    {% endif %}
+                    {% if buku.format_file %}
+                        <span class="meta-item">
+                            <strong>Format:</strong> {{ buku.get_format_file_display }}
+                        </span>
+                    {% endif %}
+                    <span class="meta-item">
+                        <strong>Stok:</strong> {{ buku.stok }} buku
+                    </span>
+                </div>
+                {% if buku.deskripsi %}
+                    <div class="detail-description">
+                        <h3>Deskripsi</h3>
+                        <p>{{ buku.deskripsi }}</p>
+                    </div>
+                {% endif %}
+                <div class="detail-actions">
+                    {% if buku.file_buku %}
+                        {% if buku.format_file == 'pdf' %}
+                            <a href="{% url 'perpustakaan:baca_online' buku.id %}" class="btn btn-primary" target="_blank">
+                                📖 Baca Online
+                            </a>
+                        {% elif buku.format_file == 'epub' %}
+                            <a href="{% url 'perpustakaan:baca_epub' buku.id %}" class="btn btn-primary">
+                                📖 Buka di Okular
+                            </a>
+                        {% endif %}
+                        <a href="{% url 'perpustakaan:download_buku' buku.id %}" class="btn btn-secondary">
+                            📥 Download {{ buku.get_format_file_display }}
+                        </a>
+                    {% else %}
+                        <button class="btn btn-secondary" disabled>File tidak tersedia</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

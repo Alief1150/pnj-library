@@ -1,0 +1,46 @@
+{% extends 'perpustakaan/base.html' %}
+
+{% block title %}Koleksi Buku - Perpustakaan PNJ{% endblock %}
+
+{% block content %}
+<section class="koleksi-section">
+    <div class="container">
+        <h1 class="page-title">Koleksi Buku Perpustakaan PNJ</h1>
+        <div class="books-grid">
+            {% for buku in semua_buku %}
+                <div class="book-card">
+                    <div class="book-cover">
+                        {% if buku.cover %}
+                            <img src="{{ buku.cover.url }}" alt="{{ buku.judul }}">
+                        {% else %}
+                            <div class="placeholder-cover">
+                                <svg width="60" height="80" viewBox="0 0 60 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="60" height="80" rx="4" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+                                    <rect x="8" y="12" width="44" height="4" rx="2" fill="#4caf50"/>
+                                    <rect x="8" y="20" width="36" height="2" rx="1" fill="#81c784"/>
+                                    <rect x="8" y="26" width="40" height="2" rx="1" fill="#81c784"/>
+                                    <rect x="8" y="32" width="32" height="2" rx="1" fill="#81c784"/>
+                                </svg>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">{{ buku.judul|truncatewords:5 }}</h3>
+                        <p class="book-author">{{ buku.penulis }}</p>
+                        <span class="book-category">{{ buku.get_jenis_display }}</span>
+                        {% if buku.format_file %}
+                            <span class="book-format">{{ buku.get_format_file_display }}</span>
+                        {% endif %}
+                        <p class="book-stock">Stok: {{ buku.stok }}</p>
+                    </div>
+                    <a href="{% url 'perpustakaan:detail_buku' buku.id %}" class="btn-book">Lihat Detail</a>
+                </div>
+            {% empty %}
+                <div class="no-books">
+                    <p>Belum ada buku yang tersedia saat ini.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
