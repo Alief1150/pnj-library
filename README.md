@@ -16,6 +16,9 @@ Repository: https://github.com/Alief1150/pnj-library
 
 Saat ini proyek masih **tahap development**.
 
+Tersedia juga file `.env.example` sebagai template konfigurasi environment.
+> Catatan: konfigurasi `.env` disiapkan untuk standardisasi/deploy; sebagian setting masih hardcoded di `settings.py` dan bisa dimigrasikan bertahap ke env variable.
+
 ---
 
 ## 1) Setup & Install
@@ -35,7 +38,10 @@ python -m venv venv
 .\venv\Scripts\Activate.ps1
 
 pip install --upgrade pip
-pip install django pillow
+pip install -r requirements.txt
+
+# optional: copy env template
+Copy-Item .env.example .env
 
 python manage.py migrate
 python manage.py createsuperuser
@@ -65,7 +71,10 @@ python3 -m venv venv
 source venv/bin/activate
 
 pip install --upgrade pip
-pip install django pillow
+pip install -r requirements.txt
+
+# optional: copy env template
+cp .env.example .env
 
 python manage.py migrate
 python manage.py createsuperuser
@@ -112,7 +121,10 @@ python -m venv venv
 source venv/bin/activate
 
 pip install --upgrade pip
-pip install django pillow
+pip install -r requirements.txt
+
+# optional: copy env template
+cp .env.example .env
 
 python manage.py migrate
 python manage.py createsuperuser
